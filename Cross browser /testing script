@@ -1,0 +1,60 @@
+import unittest
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+class EntechContactFormTest(unittest.TestCase):
+    def setUp(self):
+        # Define the list of browsers to test
+        self.browsers = ["chrome", "firefox", "edge"]
+
+    def test_submit_contact_form(self):
+        for browser in self.browsers:
+            if browser == "chrome":
+                driver = webdriver.Chrome()
+            elif browser == "firefox":
+                driver = webdriver.Firefox()
+            elif browser == "edge":
+                driver = webdriver.Edge()
+
+            # Maximize the browser window
+            driver.maximize_window()
+
+            # Navigate to the Entech website
+            driver.get('https://entech.com/about-entech/contact/')
+
+            # Wait for the contact form to be visible
+            contact_form = WebDriverWait(driver, 10).until(
+                EC.visibility_of_element_located((By.ID, 'contact_form'))
+            )
+
+            # Fill in the contact form fields
+            name_input = driver.find_element(By.ID, 'name')
+            name_input.send_keys('John Doe')
+
+            email_input = driver.find_element(By.ID, 'email')
+            email_input.send_keys('johndoe@example.com')
+
+            message_input = driver.find_element(By.ID, 'message')
+            message_input.send_keys('This is a test message.')
+
+            # Submit the form
+            submit_button = driver.find_element(By.XPATH, '//input[@type="submit"]')
+            submit_button.click()
+
+            # Wait for the success message
+            success_message = WebDriverWait(driver, 10).until(
+                EC.visibility_of_element_located((By.XPATH, '//div[@class="wpcf7-response-output wpcf7-display-none wpcf7-mail-sent-ng"]'))
+            )
+
+            # Print the success message
+            print(f"Browser: {browser}")
+            print(success_message.text)
+            print()
+
+            # Close the browser
+            driver.quit()
+
+if __name__ == '__main__':
+    unittest.main()
