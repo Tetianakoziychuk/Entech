@@ -1,0 +1,55 @@
+import unittest
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+class EntechContactFormTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        # Specify the path to the chromedriver executable
+        # Download the appropriate version of chromedriver from http://chromedriver.chromium.org/home
+        cls.chromedriver_path = '/path/to/chromedriver'
+        
+        # Create a new instance of the Chrome driver
+        cls.driver = webdriver.Chrome(cls.chromedriver_path)
+        cls.driver.maximize_window()
+        
+    def test_submit_contact_form(self):
+        # Navigate to the Entech website
+        self.driver.get('https://entech.com/about-entech/contact/')
+        
+        # Wait for the contact form to be visible
+        contact_form = WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located((By.ID, 'contact_form'))
+        )
+        
+        # Fill in the contact form fields
+        name_input = self.driver.find_element(By.ID, 'name')
+        name_input.send_keys('John Doe')
+        
+        email_input = self.driver.find_element(By.ID, 'email')
+        email_input.send_keys('johndoe@example.com')
+        
+        message_input = self.driver.find_element(By.ID, 'message')
+        message_input.send_keys('This is a test message.')
+        
+        # Submit the form
+        submit_button = self.driver.find_element(By.XPATH, '//input[@type="submit"]')
+        submit_button.click()
+        
+        # Wait for the success message
+        success_message = WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located((By.XPATH, '//div[@class="wpcf7-response-output wpcf7-display-none wpcf7-mail-sent-ng"]'))
+        )
+        
+        # Assert that the success message is displayed
+        self.assertTrue(success_message.is_displayed())
+        
+    @classmethod
+    def tearDownClass(cls):
+        # Close the browser
+        cls.driver.quit()
+
+if __name__ == '__main__':
+    unittest.main()
