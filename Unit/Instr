@@ -1,0 +1,5 @@
+Make sure to replace '/path/to/chromedriver' with the actual path to the chromedriver executable on your system. You can download the appropriate version of chromedriver for your system from the official website (http://chromedriver.chromium.org/home).
+
+To run the unit test, simply execute the script. It will navigate to the Entech "Contact" page, fill in the contact form with sample data, submit the form, and assert that the success message is displayed. If the success message is displayed, the test passes; otherwise, it fails.
+
+Note that this script assumes you have the Selenium library installed (pip install selenium) and have the Chrome browser installed on your system. Additionally, it uses the unittest module from the Python standard library for organizing and running the tests.
