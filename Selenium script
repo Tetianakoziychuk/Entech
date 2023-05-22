@@ -1,0 +1,47 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+# Specify the path to the chromedriver executable
+# Download the appropriate version of chromedriver from http://chromedriver.chromium.org/home
+chromedriver_path = '/path/to/chromedriver'
+
+# Create a new instance of the Chrome driver
+driver = webdriver.Chrome(chromedriver_path)
+
+# Maximize the browser window
+driver.maximize_window()
+
+# Navigate to the Entech website
+driver.get('https://entech.com/about-entech/contact/')
+
+# Wait for the contact form to be visible
+contact_form = WebDriverWait(driver, 10).until(
+    EC.visibility_of_element_located((By.ID, 'contact_form'))
+)
+
+# Fill in the contact form fields
+name_input = driver.find_element(By.ID, 'name')
+name_input.send_keys('John Doe')
+
+email_input = driver.find_element(By.ID, 'email')
+email_input.send_keys('johndoe@example.com')
+
+message_input = driver.find_element(By.ID, 'message')
+message_input.send_keys('This is a test message.')
+
+# Submit the form
+submit_button = driver.find_element(By.XPATH, '//input[@type="submit"]')
+submit_button.click()
+
+# Wait for the success message
+success_message = WebDriverWait(driver, 10).until(
+    EC.visibility_of_element_located((By.XPATH, '//div[@class="wpcf7-response-output wpcf7-display-none wpcf7-mail-sent-ng"]'))
+)
+
+# Print the success message
+print(success_message.text)
+
+# Close the browser
+driver.quit()
