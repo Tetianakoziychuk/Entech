@@ -1,0 +1,43 @@
+#Pytest is a popular testing framework for Python that provides a simple and flexible approach to writing tests. It offers powerful features and integrations, making it an excellent choice for Selenium WebDriver automation testing. Here's an overview of how to set up and use Pytest for Selenium automation:
+
+#Installation: First, make sure you have Pytest installed. You can install it using pip:
+
+#pip install pytest
+
+
+
+#Project Structure: Organize your project in a structured manner. A common project structure for Pytest-based test automation might look like this
+
+# ├── tests
+│   ├── conftest.py
+│   └── test_example.py
+├── pages
+│   └── example_page.py
+└── utils
+    └── webdriver.py
+    
+import pytest
+from selenium import webdriver
+
+@pytest.fixture(scope="session")
+
+def driver():
+    driver = webdriver.Chrome()  # Or choose the appropriate browser driver
+    yield driver
+    driver.quit()
+    
+# Writing Tests: Write your test cases as regular Python functions within your test files (e.g., test_example.py). You can utilize the fixtures defined in the conftest.py file. Here's an example:   
+def test_example(driver):
+    driver.get("https://www.example.com")
+    assert driver.title == "Example Domain"
+    
+#In this example, the driver fixture is passed as an argument to the test function, allowing you to use the Selenium WebDriver instance within the test.
+
+Running Tests: To run your tests, simply execute the pytest command in your project's root directory:
+
+#pytest
+#Pytest automatically discovers and runs the test files based on the naming convention (test_*.py) and the presence of the pytest command.
+
+Advanced Features: Pytest offers many advanced features, such as test parametrization, test fixtures, test markers, and plugins. You can explore these features to enhance your test automation framework further.
+
+By utilizing Pytest, you can write concise and readable test scripts, take advantage of built-in assertions, handle test fixtures and setup, and generate detailed test reports. Pytest's extensive ecosystem also provides plugins for integrating with other tools and frameworks, making it a versatile choice for Selenium automation testing in Python
